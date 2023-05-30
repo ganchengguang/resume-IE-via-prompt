@@ -56,9 +56,7 @@ def prepare_df(pkl_location):
     return df
 
 # load df
-# df = prepare_df('resume_data/数据集/prompt_dataset_csv/test.txt')
-# df_train = prepare_df('resume_data/数据集/prompt_dataset_csv/train.txt')
-df_train = prepare_df('resume_data/数据集/80000clear.txt')
+df_train = prepare_df('80000clear.txt')
 # df_train=df_train.sample(n=500,random_state=42)
 
 # epochs
@@ -376,7 +374,7 @@ def validating(model, dataloader, device=None):
     return valid_stats
 
 
-# 绘制混淆矩阵
+# plot confuse matrix
 conf_matrix = torch.zeros((7, 7))
 
 from matplotlib import pyplot as plt
@@ -407,17 +405,13 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
         plt.xticks(tick_marks, classes, rotation=90)
         plt.yticks(tick_marks, classes)
 
-    # 。。。。。。。。。。。。新增代码开始处。。。。。。。。。。。。。。。。
-    # x,y轴长度一致(问题1解决办法）
     plt.axis("equal")
-    # x轴处理一下，如果x轴或者y轴两边有空白的话(问题2解决办法）
-    ax = plt.gca()  # 获得当前axis
-    left, right = plt.xlim()  # 获得x轴最大最小值
+    ax = plt.gca() 
+    left, right = plt.xlim() 
     ax.spines['left'].set_position(('data', left))
     ax.spines['right'].set_position(('data', right))
     for edge_i in ['top', 'bottom', 'right', 'left']:
         ax.spines[edge_i].set_edgecolor("white")
-    # 。。。。。。。。。。。。新增代码结束处。。。。。。。。。。。。。。。。
 
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
@@ -494,19 +488,17 @@ optimizer = torch.optim.AdamW(params=model.parameters(),
 # scaler = GradScaler()
 
 # caculate paramate 
-# 定义总参数量、可训练参数量及非可训练参数量变量
 Total_params = 0
 Trainable_params = 0
 NonTrainable_params = 0
 
-# 遍历model.parameters()返回的全局参数列表
 for param in model.parameters():
-    mulValue = np.prod(param.size())  # 使用numpy prod接口计算参数数组所有元素之积
-    Total_params += mulValue  # 总参数量
+    mulValue = np.prod(param.size()) 
+    Total_params += mulValue 
     if param.requires_grad:
-        Trainable_params += mulValue  # 可训练参数量
+        Trainable_params += mulValue  
     else:
-        NonTrainable_params += mulValue  # 非可训练参数量
+        NonTrainable_params += mulValue 
 
 print(f'Total params: {Total_params}')
 print(f'Trainable params: {Trainable_params}')
