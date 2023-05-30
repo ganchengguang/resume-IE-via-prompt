@@ -2,7 +2,7 @@
 from openprompt.data_utils.text_classification_dataset import AgnewsProcessor,resumeProcessor
 
 dataset={}
-dataset['train'] = resumeProcessor().get_train_examples("resume_data/数据集/prompt_dataset_csv")
+dataset['train'] = resumeProcessor().get_train_examples("prompt_dataset_csv")
 # We sample a few examples to form the few-shot training pool
 from openprompt.data_utils.data_sampler import FewShotSampler
 from openprompt.utils.reproduciblity import set_seed
@@ -20,8 +20,8 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 
 dataset['train'] = sampler(dataset['train'], seed=42)
-# dataset['validation'] = resumeProcessor().get_test_examples("resume_data/数据集/prompt_dataset_csv")
-dataset['test'] = resumeProcessor().get_test_examples("resume_data/数据集/prompt_dataset_csv")
+# dataset['validation'] = resumeProcessor().get_test_examples("prompt_dataset_csv")
+dataset['test'] = resumeProcessor().get_test_examples("prompt_dataset_csv")
 
 dataset['train']
 
@@ -69,7 +69,7 @@ from openprompt.prompts import SoftVerbalizer,KnowledgeableVerbalizer,PTRVerbali
 import torch
 
 
-myverbalizer = KnowledgeableVerbalizer(tokenizer, num_classes=7).from_file("resume_data/script/KnowledgeableVerbalizer原始.txt")
+myverbalizer = KnowledgeableVerbalizer(tokenizer, num_classes=7).from_file("resume_data/script/KnowledgeableVerbalizeroriginal.txt")
 # myverbalizer=ManualVerbalizer(tokenizer,num_classes=7,label_words=[["experience"],  ["personal information"], ["summary"], ["education"], ["qualification"], ["skill"], ["object"]])
 myverbalizer = SoftVerbalizer(tokenizer, plm, num_classes=7)
 # myverbalizer=AutomaticVerbalizer(tokenizer,num_candidates=10,num_classes=7,score_fct='llr',balance=True)
@@ -159,7 +159,7 @@ def confusion_matrix(preds, labels, conf_matrix):
     return conf_matrix
 
 
-# 绘制混淆矩阵
+# construct confuse matrix
 def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -174,17 +174,13 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
         plt.xticks(tick_marks, classes, rotation=90)
         plt.yticks(tick_marks, classes)
 
-    # 。。。。。。。。。。。。新增代码开始处。。。。。。。。。。。。。。。。
-    # x,y轴长度一致(问题1解决办法）
     plt.axis("equal")
-    # x轴处理一下，如果x轴或者y轴两边有空白的话(问题2解决办法）
-    ax = plt.gca()  # 获得当前axis
-    left, right = plt.xlim()  # 获得x轴最大最小值
+    ax = plt.gca()  
+    left, right = plt.xlim() 
     ax.spines['left'].set_position(('data', left))
     ax.spines['right'].set_position(('data', right))
     for edge_i in ['top', 'bottom', 'right', 'left']:
         ax.spines[edge_i].set_edgecolor("white")
-    # 。。。。。。。。。。。。新增代码结束处。。。。。。。。。。。。。。。。
 
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
@@ -222,7 +218,7 @@ for step, inputs in enumerate(test_dataloader):
 f1score = f1_score(alllabels, allpreds, average='micro')
 print("f1:",f1score)
 acc = sum([int(i==j) for i,j in zip(allpreds, alllabels)])/len(allpreds)
-print("test:", acc)  # roughly ~0.85
+print("test:", acc)  
 
 
 # conf_matrix需要是numpy格式
