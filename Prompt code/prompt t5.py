@@ -4,7 +4,7 @@ from lib2to3.pgen2.tokenize import TokenError
 from openprompt.data_utils.text_classification_dataset import AgnewsProcessor,resumeProcessor
 
 dataset={}
-dataset['train'] = resumeProcessor().get_train_examples("resume_data/数据集/prompt_dataset_csv")
+dataset['train'] = resumeProcessor().get_train_examples("prompt_dataset_csv")
 # We sample a few examples to form the few-shot training pool
 from openprompt.data_utils.data_sampler import FewShotSampler
 from openprompt.utils.reproduciblity import set_seed
@@ -23,8 +23,8 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 
 dataset['train'] = sampler(dataset['train'],seed=42)
-# dataset['validation'] = resumeProcessor().get_test_examples("resume_data/数据集/prompt_dataset_csv")
-dataset['test'] = resumeProcessor().get_test_examples("resume_data/数据集/prompt_dataset_csv")
+# dataset['validation'] = resumeProcessor().get_test_examples("prompt_dataset_csv")
+dataset['test'] = resumeProcessor().get_test_examples("prompt_dataset_csv")
 
 dataset['train']
 
@@ -92,19 +92,17 @@ if use_cuda:
 
 
 # caculate paramate 
-# 定义总参数量、可训练参数量及非可训练参数量变量
 Total_params = 0
 Trainable_params = 0
 NonTrainable_params = 0
 import numpy as np
-# 遍历model.parameters()返回的全局参数列表
 for param in prompt_model.parameters():
-    mulValue = np.prod(param.size())  # 使用numpy prod接口计算参数数组所有元素之积
-    Total_params += mulValue  # 总参数量
+    mulValue = np.prod(param.size())  
+    Total_params += mulValue  
     if param.requires_grad:
-        Trainable_params += mulValue  # 可训练参数量
+        Trainable_params += mulValue  
     else:
-        NonTrainable_params += mulValue  # 非可训练参数量
+        NonTrainable_params += mulValue 
 
 print(f'Total params: {Total_params}')
 print(f'Trainable params: {Trainable_params}')
@@ -187,7 +185,7 @@ def confusion_matrix(preds, labels, conf_matrix):
     return conf_matrix
 
 
-# 绘制混淆矩阵
+# construct confuse matrix
 def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -202,17 +200,13 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
         plt.xticks(tick_marks, classes, rotation=90)
         plt.yticks(tick_marks, classes)
 
-    # 。。。。。。。。。。。。新增代码开始处。。。。。。。。。。。。。。。。
-    # x,y轴长度一致(问题1解决办法）
     plt.axis("equal")
-    # x轴处理一下，如果x轴或者y轴两边有空白的话(问题2解决办法）
-    ax = plt.gca()  # 获得当前axis
-    left, right = plt.xlim()  # 获得x轴最大最小值
+    ax = plt.gca() 
+    left, right = plt.xlim() 
     ax.spines['left'].set_position(('data', left))
     ax.spines['right'].set_position(('data', right))
     for edge_i in ['top', 'bottom', 'right', 'left']:
         ax.spines[edge_i].set_edgecolor("white")
-    # 。。。。。。。。。。。。新增代码结束处。。。。。。。。。。。。。。。。
 
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
@@ -255,8 +249,6 @@ print("test accuracy:", acc)  # roughly ~0.85
 print("test f1 score:",f1score)
 
 
-# conf_matrix需要是numpy格式
-# attack_types是分类实验的类别，eg：
 attack_types = ['Exp','PI','Sum','Edu','QC','Skill','Obj']
 plot_confusion_matrix(conf_matrix.numpy(), classes=attack_types, normalize=False,
                                  title='50-shot MT+MKV confusion matrix')
