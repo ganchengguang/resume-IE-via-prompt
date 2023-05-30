@@ -1,0 +1,7 @@
+experience,responsible,role,responsibilities,position,ltd,client,environment,team,duration,project,description
+personal,detail,profie,com,email,number,mobile,contact,name,detail,family,male,female,nationality,birth,gender,hobbies,interest,father,mother
+summary,expertise,years,expert,good,excellent,achievements,achievement,snapshot,strength
+education,university,master,bachelor,school
+certification,qualification,certified,train,passed
+skill,technical,tool,it,programing,tools
+object,objective,declaration,i,hereby,declare

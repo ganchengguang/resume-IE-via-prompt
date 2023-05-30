@@ -1,0 +1,7 @@
+experience,
+personal,name,birth,languages,com,nationality,personal,mobile,father,male,contact,hobbies,gender,details,sex,married,unmarried,mobile,female,birth,mail
+summary,
+education,
+qualification,
+skill,
+object,
