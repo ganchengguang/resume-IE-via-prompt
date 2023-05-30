@@ -4,8 +4,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # データの読込
-df = pd.read_table('resume_data/数据集/80000clear.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
-# df = pd.read_table('resume_data/数据集/prompt_dataset_csv/train.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
+df = pd.read_table('80000clear.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
+# df = pd.read_table('prompt_dataset_csv/train.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
 # df=df.sample(n=10000,random_state=42)
 # train=df
 # print(df)
@@ -25,9 +25,9 @@ LEARNING_RATE = 1e-5
 train, valid_test = train_test_split(df, test_size=0.3, shuffle=True, random_state=42, stratify=df['label'])
 #print(valid_test.head), stratify=valid_test['label'], stratify=df['label']
 valid, test = train_test_split(valid_test, test_size=0.5, shuffle=True, random_state=42, stratify=valid_test['label'])
-# valid=pd.read_table('resume_data/数据集/prompt_dataset_csv/valid.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
+# valid=pd.read_table('valid.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
 # valid=valid.sample(n=512,random_state=42)
-# test=pd.read_table('resume_data/数据集/prompt_dataset_csv/test.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
+# test=pd.read_table('test.txt', encoding='utf-8',sep='\t', names=['label', 'sentence'])
 
 train.reset_index(drop=True, inplace=True)
 valid.reset_index(drop=True, inplace=True)
