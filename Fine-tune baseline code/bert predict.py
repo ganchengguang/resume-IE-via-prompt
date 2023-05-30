@@ -1,6 +1,4 @@
 #! -*- coding:utf-8 -*-
-# 句子对分类任务，LCQMC数据集
-# val_acc: 0.887071, test_acc: 0.870320
 import numpy as np
 import os
 
@@ -14,7 +12,7 @@ from bert4keras.snippets import open
 from keras.layers import Dropout, Dense
 from tqdm import tqdm
 
-set_gelu('tanh')  # 切换gelu版本
+set_gelu('tanh')  # set gelu version
 line_label = {0: 'experience', 1: 'knowledge', 2: 'education', 3: 'project', 4: 'others'}
 label2index = {v:k for k,v in line_label.items()}
 
@@ -26,12 +24,12 @@ config_path = 'E:/bert4keras-master/uncased_L-12_H-768_A-12/bert_config.json'
 checkpoint_path = 'E:/bert4keras-master/uncased_L-12_H-768_A-12/bert_model.ckpt'
 dict_path = 'E:/bert4keras-master/uncased_L-12_H-768_A-12/vocab.txt'
 
-# 建立分词器
+# constuct tokenizer
 tokenizer = Tokenizer(dict_path, do_lower_case=True)
 
 
 
-# 加载预训练模型
+# load model from huggingface
 bert = build_transformer_model(
     config_path=config_path,
     checkpoint_path=checkpoint_path,
@@ -95,7 +93,7 @@ def preprocess_text(text):
 def join_name_tag(text):
     text = text.replace('\\u2003', '')
     return text
-data_dir_path = 'C:\\Users\\Administrator\\iCloudDrive\\Desktop\\论文模型\\keras-english-resume-parser-and-analyzer-master\\demo\\data\\resume_samples\\(NEW)2043_RAKESH_KUMAR_GUPTA (1).docx'
+data_dir_path = 'resume.docx'
 def predict_sentence(sentence):
             token_ids, segment_ids = tokenizer.encode(
                         sentence, maxlen=len(sentence.split())
