@@ -36,7 +36,7 @@ class resumeProcessor(DataProcessor):
 
     def __init__(self):
         super().__init__()
-        self.labels = ["Personal Information", "Experience", "Summary", "Education","Qualification Certification", "Skill","Object"]
+        self.labels = ["PI", "Experience", "Summary", "Education","Qualification Certification", "Skill","Object"]
 
     def get_examples(self, data_dir, split):
         path = os.path.join(data_dir, "{}.csv".format(split))
